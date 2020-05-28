@@ -12,3 +12,7 @@ body {
 #greeting-container {
   margin-top: 20px;
 }
+
+div{
+    max-width : 800px;
+}
