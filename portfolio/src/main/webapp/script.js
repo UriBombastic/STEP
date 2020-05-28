@@ -47,3 +47,10 @@ function randomImage(){
         imageContainer.style.width = "800";//I'm struggling so desperately to constrain this width
          // });
 }
+
+//tried doing a simple print("hello world") only for Google Chrome to attempt to print my webpage
+//thus inspiring this function
+function gagFunction()
+{
+print("hello world");
+}
