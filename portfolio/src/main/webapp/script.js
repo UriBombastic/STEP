@@ -23,7 +23,8 @@ function addRandomGreeting() {
       'Minecraft probably takes the title of my favorite game of all time.',
       'My dad moved to the United States from Argentina',
       'Like literally every little boy, I once had an obsession with Dinosaurs, but later moved on to Ben 10 then Dragonball Z.',
-      'My favorite sport is probably dodgeball. Actually, come to think of it, it\'s really the only sport I like.'];
+      'My favorite sport is probably dodgeball. Actually, come to think of it, it\'s really the only sport I like.',
+      'Belief in alien life: 100%. Belief in alien visitations: 75%. Belief in Alien abductions: 40%. Belief in ancient astronaut theories: 15%'];
 
   // Pick a random greeting.
   const greeting = greetings[Math.floor(Math.random() * greetings.length)];
