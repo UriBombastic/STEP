@@ -15,8 +15,8 @@
 /**
  * Adds a random greeting to the page.
  */
-function addRandomGreeting() {
-  const greetings =
+function addRandomFunFact() {
+  const funFacts =
       ['Hablo Espanol!','My first programming class was visual basic, sophomore year of high school, 2015',
       'I hold the highest bench, squat, and fastest mile time of anyone named Uri in my household.',
       'In two years, I went from working at Arby\'s, to doing game development with my university, to interning at Google.',
@@ -27,11 +27,11 @@ function addRandomGreeting() {
       'Belief in alien life: 100%. Belief in alien visitations: 75%. Belief in Alien abductions: 40%. Belief in ancient astronaut theories: 15%'];
 
   // Pick a random greeting.
-  const greeting = greetings[Math.floor(Math.random() * greetings.length)];
+  const fact = funFacts[Math.floor(Math.random() * funFacts.length)];
 
   // Add it to the page.
-  const greetingContainer = document.getElementById('greeting-container');
-  greetingContainer.innerText = greeting;
+  const funFactContainer = document.getElementById('funFact-container');
+  funFactContainer.innerText = fact;
 }
 
 function randomImage() {
