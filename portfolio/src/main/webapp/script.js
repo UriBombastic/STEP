@@ -17,8 +17,13 @@
  */
 function addRandomGreeting() {
   const greetings =
-      ['Hello world!', '¡Hola Mundo!', '你好，世界！', 'Bonjour le monde!', 'q onda guey', 'cringe', 'You\'re still learning English? The Language you Speak? How stupid are you?', 'Live Long, and Prosper.',
-      'Can I make text <b>BOLD</b> in quotes?'];
+      ['Hablo Espanol!','My first programming class was visual basic, sophomore year of high school, 2015',
+      'I hold the highest bench, squat, and fastest mile time of anyone named Uri in my household.',
+      'In two years, I went from working at Arby\'s, to doing game development with my university, to interning at Google.',
+      'Minecraft probably takes the title of my favorite game of all time.',
+      'My dad moved to the United States from Argentina',
+      'Like literally every little boy, I once had an obsession with Dinosaurs, but later moved on to Ben 10 then Dragonball Z.',
+      'My favorite sport is probably dodgeball. Actually, come to think of it, it\'s really the only sport I like.'];
 
   // Pick a random greeting.
   const greeting = greetings[Math.floor(Math.random() * greetings.length)];
