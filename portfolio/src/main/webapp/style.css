@@ -1,3 +1,14 @@
+body {
+  background: url("/images/Cosmos.jpg");
+  background-repeat: repeat;
+  color: #FFFFFF;
+}
+
+/*Hyperlinks*/
+a {
+  color:coral;
+}
+
 #content {
   margin-left: auto;
   margin-right: auto;
@@ -6,4 +17,8 @@
 
 #greeting-container {
   margin-top: 20px;
+}
+
+div {
+  max-width : 800px;
 }
