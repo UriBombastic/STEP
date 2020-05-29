@@ -34,29 +34,23 @@ function addRandomGreeting() {
   greetingContainer.innerText = greeting;
 }
 
-function randomImage(){
-   // const fs = require('fs');
-    const dir = 'images/senior-pics/';
-
-    //fs.readdir(dir, (err,files) => { 
-        const imageIndex = Math.floor(Math.random() * 15)+1;
+function randomImage() {
+  const imageIndex = Math.floor(Math.random() * 15)+1;
   
-        const imgUrl = dir + imageIndex +'.jpg';
+  const imgUrl = dir + imageIndex +'.jpg';
 
-        const imgElement = document.createElement('img');
-        imgElement.src = imgUrl;
+  const imgElement = document.createElement('img');
+  imgElement.src = imgUrl;
 
-        const imageContainer = document.getElementById('senior-picture-container');
-//remove previous image
-        imageContainer.innerHTML = '';
-        imageContainer.appendChild(imgElement);
-        imageContainer.style.width = "800";//I'm struggling so desperately to constrain this width
-         // });
+  const imageContainer = document.getElementById('senior-picture-container');
+  //remove previous image
+  imageContainer.innerHTML = '';
+  imageContainer.appendChild(imgElement);
+  imageContainer.style.width = "800";//I'm struggling so desperately to constrain this width
 }
 
 //tried doing a simple print("hello world") only for Google Chrome to attempt to print my webpage
 //thus inspiring this function
-function gagFunction()
-{
-print("hello world");
+function gagFunction() {
+  print("hello world");
 }
