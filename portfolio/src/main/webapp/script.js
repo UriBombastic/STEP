@@ -49,6 +49,12 @@ function randomImage() {
   imageContainer.style.width = "800";//I'm struggling so desperately to constrain this width
 }
 
+async function pullFromData() {
+  const response = await fetch('/data1');
+  const quote = await response.text();
+  document.getElementById('data-container').innerText = quote;
+}
+
 //tried doing a simple print("hello world") only for Google Chrome to attempt to print my webpage
 //thus inspiring this function
 function gagFunction() {
