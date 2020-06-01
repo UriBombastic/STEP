@@ -35,9 +35,9 @@ function addRandomFunFact() {
 }
 
 function randomImage() {
-  const imageIndex = Math.floor(Math.random() * 15)+1;
+  const imageIndex = Math.floor(Math.random() * 6)+1;
   
-  const imgUrl = dir + imageIndex +'.jpg';
+  const imgUrl = 'images/senior-pics/' + imageIndex +'.jpg';
 
   const imgElement = document.createElement('img');
   imgElement.src = imgUrl;
