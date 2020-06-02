@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
-@WebServlet("/data1") //"data" kept loading a blank screen no matter what I did so this was my workaround
+@WebServlet("/data") //"data" kept loading a blank screen no matter what I did so this was my workaround
 public class DataServlet extends HttpServlet {
 
   @Override

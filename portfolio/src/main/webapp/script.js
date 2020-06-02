@@ -50,7 +50,7 @@ function randomImage() {
 }
 
 async function pullFromData() {
-  const response = await fetch('/data1');
+  const response = await fetch('/data');
   const quote = await response.text();
   document.getElementById('data-container').innerText = quote;
 }
