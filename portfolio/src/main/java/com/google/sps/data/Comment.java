@@ -5,21 +5,21 @@ public class Comment {
   private String comment;
   private String posterName;
 
-  public Comment(String comment, String posterName){
-      this.comment = comment;
-      this.posterName = posterName;
+  public Comment(String comment, String posterName) {
+    this.comment = comment;
+    this.posterName = posterName;
   }
 
-  public Comment(String comment){
-      this.comment = comment;
-      this.posterName = "Anonymous";
+  public Comment(String comment) {
+    this.comment = comment;
+    this.posterName = "Anonymous";
   }
 
-  public String getComment(){
-      return comment;
+  public String getComment() {
+    return comment;
   }
 
-  public String getPosterName(){
-      return posterName;
+  public String getPosterName() {
+    return posterName;
   }
 }
