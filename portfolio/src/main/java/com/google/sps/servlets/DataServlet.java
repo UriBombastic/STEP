@@ -24,14 +24,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
-@WebServlet("/data1") //"data" kept loading a ghost file I had deleted so I came up with this stupid workaround
+@WebServlet("/data1") //"data" kept loading a blank screen no matter what I did so this was my workaround
 public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-  //  response.setContentType("text/html;");
-    //response.getWriter().println("Hello Uri!");
-
     //create comment adn convert to Json
    // Comment firstComment = new Comment("Andrew Yang", "Hi I'm Andrew Yang");
   ArrayList<String> comments = new ArrayList<String>();
