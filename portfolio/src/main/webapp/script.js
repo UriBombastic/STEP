@@ -53,7 +53,18 @@ async function pullFromData() {
   const response = await fetch('/data1');
   const quote = await response.text();
   document.getElementById('data-container').innerText = quote;
+  /*
+  const commentContainer = document.getElementById('data-container');
+  //had to use this disgusting pattern because I'm not sure how to make a stable alternative
+  fetch('/data').then(response => response.json()).then((comment)=>{
+    commentContainer.innerHTML ='';
+  commentContainer.appendChild(
+    createListElement(comment.posterName));
+  commentContainer.appendChild(
+    createListElement(comment.comment +'\n'));    
+  });*/
 }
+
 
 //tried doing a simple print("hello world") only for Google Chrome to attempt to print my webpage
 //thus inspiring this function
