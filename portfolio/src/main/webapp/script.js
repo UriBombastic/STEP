@@ -57,19 +57,16 @@ async function pullFromData() {
 
 function getComments() {
   fetch('/data').then(response => response.json()).then((comments) =>{
-      const dataContainer = document.getElementById('data-container');
-
+    const dataContainer = document.getElementById('data-container');
     //clear data
-      dataContainer.innerHTML = ""; 
-      dataContainer.innerText = comments;
-      //generate comments
-      console.log("Hello world!");
-      console.log(comments.length);
-      comments.foreach((comment) =>{
-          console.log("hello world");
-        dataContainer.innerText = "Hello world!";
-        dataContainer.appendChild(createListElement(comment));
-      })
+    dataContainer.innerHTML = ""; 
+
+    //genereate comments
+    for(i = 0; i < comments.length; i++)
+    {
+      console.log("hello world");
+      dataContainer.appendChild(createListElement(comments[i]));
+    }
   });
 }
 

@@ -29,8 +29,8 @@ public class DataServlet extends HttpServlet {
 
   private ArrayList<String> comments = new ArrayList<String>(
     Arrays.asList("This site is awesome!!!!!!1!",
-    "Hi, I'm Andrew Yang, and I approve this message.\n",
-    "Hi, I'm Andrew Ying, and I dissaprove of the above.\n")
+    "Hi, I'm Andrew Yang, and I approve this message.",
+    "Hi, I'm Andrew Ying, and I dissaprove of the above.")
   );
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
