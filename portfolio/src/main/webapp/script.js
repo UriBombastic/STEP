@@ -35,9 +35,9 @@ function addRandomFunFact() {
 }
 
 function randomImage() {
-  const imageIndex = Math.floor(Math.random() * 15)+1;
+  const imageIndex = Math.floor(Math.random() * 6)+1;
   
-  const imgUrl = dir + imageIndex +'.jpg';
+  const imgUrl = 'images/senior-pics/' + imageIndex +'.jpg';
 
   const imgElement = document.createElement('img');
   imgElement.src = imgUrl;
@@ -47,6 +47,48 @@ function randomImage() {
   imageContainer.innerHTML = '';
   imageContainer.appendChild(imgElement);
   imageContainer.style.width = "800";//I'm struggling so desperately to constrain this width
+}
+
+async function pullFromData() {
+  const response = await fetch('/data');
+  const quote = await response.text();
+  document.getElementById('data-container').innerText = quote;
+}
+
+function getComments() {
+  fetch('/data').then(response => response.json()).then((comments) =>{
+    const dataContainer = document.getElementById('data-container');
+    //clear data
+    dataContainer.innerHTML = ""; 
+
+    //genereate comments
+    for(i = 0; i < comments.length; i++)
+    {
+      console.log("hello world");
+      dataContainer.appendChild(createListElement(comments[i]));
+    }
+  });
+}
+
+//copied from example; used to generate list of comments
+function createListElement(text) {
+  const liElement = document.createElement('li');
+  liElement.innerText = text + "\n";
+  return liElement;
+}
+
+function createCommentElement(comment) {
+  const liElement = document.createElement('li');
+  
+  const headerElement = document.createElement('span');
+  headerElement.innerText = comment.getPosterName() +"\n";
+
+  const bodyElement = document.createElement('span');
+  bodyElement.innerText = comment.getComment() +"\n";
+
+  liElement.appendChild(headerElement);
+  liElement.appendChild(bodyElement);
+  return liElement;
 }
 
 //tried doing a simple print("hello world") only for Google Chrome to attempt to print my webpage
