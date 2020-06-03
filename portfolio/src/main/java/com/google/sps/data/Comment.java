@@ -8,7 +8,7 @@ public class Comment {
   public Comment(String posterName, String comment) {
     this.comment = comment;
     this.posterName = posterName;
-    if(comment.trim().equals("")) this.comment = "\"Hey look at me I commented whitespace I'm so cool\""
+    if(comment.trim().equals("")) this.comment = "\"Hey look at me I commented whitespace I'm so cool\"";
     if(posterName.trim().equals("")) this.posterName = "Anonymous";
   }
 
