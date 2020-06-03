@@ -55,6 +55,44 @@ async function pullFromData() {
   document.getElementById('data-container').innerText = quote;
 }
 
+function getComments() {
+  fetch('/data').then(response => response.json()).then((comments) =>{
+      const dataContainer = document.getElementById('data-container');
+
+    //clear data
+      dataContainer.innerHTML = ""; 
+      dataContainer.innerText = comments;
+      //generate comments
+      console.log("Hello world!");
+      console.log(comments.length);
+      comments.foreach((comment) =>{
+          console.log("hello world");
+        dataContainer.innerText = "Hello world!";
+        dataContainer.appendChild(createListElement(comment));
+      })
+  });
+}
+
+//copied from example; used to generate list of comments
+function createListElement(text) {
+  const liElement = document.createElement('li');
+  liElement.innerText = text + "\n";
+  return liElement;
+}
+
+function createCommentElement(comment) {
+  const liElement = document.createElement('li');
+  
+  const headerElement = document.createElement('span');
+  headerElement.innerText = comment.getPosterName() +"\n";
+
+  const bodyElement = document.createElement('span');
+  bodyElement.innerText = comment.getComment() +"\n";
+
+  liElement.appendChild(headerElement);
+  liElement.appendChild(bodyElement);
+  return liElement;
+}
 
 //tried doing a simple print("hello world") only for Google Chrome to attempt to print my webpage
 //thus inspiring this function

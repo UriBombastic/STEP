@@ -7,10 +7,15 @@
     <link rel="shortcut icon" href="images/InitialsLogo2.png">
     <script src="script.js"></script>
   </head>
-  <body>
+  <body onload = "getComments()">
     <div id="content">
-      <p> Check out this <b> EPIC <button onclick="pullFromData()">"Hello World!"</button> function!</b></p>
-      <div id="data-container"></div>
+      <p> Leave a comment? :-) </p>  
+      <form action="/data"method="POST">
+        <p>Your name: <input type="text" name = "name-entry"> </p>
+        <p>Comment: <input type="text" name = "comment-entry"></p>
+        <input type="submit"/>
+      </form>
+      <ul id="data-container"></ul>
     </div>
   </body>
 </html>
