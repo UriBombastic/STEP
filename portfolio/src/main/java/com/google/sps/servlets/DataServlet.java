@@ -48,10 +48,8 @@ public class DataServlet extends HttpServlet {
 
     List<Comment> comments = new ArrayList<>();
     for(Entity entity : results.asIterable()){
-     // long id = entity.getKey().getId();
       String author = (String) entity.getProperty("author");
       String comment = (String) entity.getProperty("comment");
-      //long timestamp = (long) entity.getProperty("timestamp");
       comments.add(new Comment(author, comment));
     }
 
@@ -66,10 +64,8 @@ public class DataServlet extends HttpServlet {
     String enteredName = request.getParameter("name-entry");
     String enteredComment = request.getParameter("comment-entry");
     long timestamp = System.currentTimeMillis();
-    /*Comment comment = new Comment(enteredName, enteredComment);
-     comments.add(comment);*/ 
-     //upload via datastore
-   Entity commentEntity = new Entity("Comment");
+    //upload via datastore
+    Entity commentEntity = new Entity("Comment");
     commentEntity.setProperty("author", enteredName);
     commentEntity.setProperty("comment", enteredComment);
     commentEntity.setProperty("timestamp", timestamp);

@@ -64,8 +64,7 @@ function getComments() {
     dataContainer.innerHTML = ""; 
     //dataContainer.innerText = JSON.stringify(comments);
     //genereate comments
-    for(i = 0; i < comments.length; i++)
-    {
+    for(i = 0; i < comments.length; i++) {
       dataContainer.appendChild(createCommentElement(comments[i]));
     }
   });
