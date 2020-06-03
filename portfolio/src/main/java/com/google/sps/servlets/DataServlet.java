@@ -16,6 +16,12 @@ package com.google.sps.servlets;
 
 import com.google.sps.data.Comment;
 import com.google.gson.Gson;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
 import java.io.IOException;
 import java.util.*;
 import javax.servlet.annotation.WebServlet;
@@ -27,18 +33,30 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/data") //"data" kept loading a blank screen no matter what I did so this was my workaround
 public class DataServlet extends HttpServlet {
 
-  private ArrayList<String> comments = new ArrayList<String>(
-    Arrays.asList("This site is awesome!!!!!!1!",
-    "Hi, I'm Andrew Yang, and I approve this message.",
-    "Hi, I'm Andrew Ying, and I dissaprove of the above.")
-  );
+  private ArrayList<Comment> comments = new ArrayList<Comment>(
+    Arrays.asList(new Comment("This site is awesome!!!!!!1!","Some fanboy"),
+    new Comment("Hi, I'm Andrew Yang, and I approve this message.","Andrew Yang"),
+    new Comment("Hi, I'm Andrew Ying, and I dissaprove of the above.","Andrew Ying")));
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    //create comment adn convert to Json
+    //create comment and convert to Json
+    Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
+    
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery results = datastore.prepare(query);
 
-    String json = convertToJson(comments);
+    List<Comment> comments = new ArrayList<>();
+    for(Entity entity : results.asIterable()){
+     // long id = entity.getKey().getId();
+      String author = (String) entity.getProperty("author");
+      String comment = (String) entity.getProperty("comment");
+      //long timestamp = (long) entity.getProperty("timestamp");
+      comments.add(new Comment(author, comment));
+    }
 
     // Send the JSON as the response
+    String json = new Gson().toJson(comments);
     response.setContentType("application/json");
     response.getWriter().println(json);
   }
@@ -47,16 +65,19 @@ public class DataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String enteredName = request.getParameter("name-entry");
     String enteredComment = request.getParameter("comment-entry");
-    Comment comment = new Comment(enteredName, enteredComment);
-    //String json = convertToJson(comment);
-    comments.add(enteredComment); //testing to se if it's working
+    long timestamp = System.currentTimeMillis();
+    /*Comment comment = new Comment(enteredName, enteredComment);
+     comments.add(comment);*/ 
+     //upload via datastore
+   Entity commentEntity = new Entity("Comment");
+    commentEntity.setProperty("author", enteredName);
+    commentEntity.setProperty("comment", enteredComment);
+    commentEntity.setProperty("timestamp", timestamp);
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(commentEntity);
+  
     response.sendRedirect("/comments.html");
   }
 
-  private String convertToJson(ArrayList<String> comment)
-  {
-    Gson gson = new Gson();
-    String json = gson.toJson(comment);
-    return json;
-  }
 }

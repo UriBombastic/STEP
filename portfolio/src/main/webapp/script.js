@@ -15,6 +15,7 @@
 /**
  * Adds a random greeting to the page.
  */
+
 function addRandomFunFact() {
   const funFacts =
       ['Hablo Espanol!','My first programming class was visual basic, sophomore year of high school, 2015',
@@ -58,14 +59,14 @@ async function pullFromData() {
 function getComments() {
   fetch('/data').then(response => response.json()).then((comments) =>{
     const dataContainer = document.getElementById('data-container');
+    console.log(comments);
     //clear data
     dataContainer.innerHTML = ""; 
-
+    //dataContainer.innerText = JSON.stringify(comments);
     //genereate comments
     for(i = 0; i < comments.length; i++)
     {
-      console.log("hello world");
-      dataContainer.appendChild(createListElement(comments[i]));
+      dataContainer.appendChild(createCommentElement(comments[i]));
     }
   });
 }
@@ -78,17 +79,17 @@ function createListElement(text) {
 }
 
 function createCommentElement(comment) {
-  const liElement = document.createElement('li');
+  const commentElement = document.createElement('li');
   
   const headerElement = document.createElement('span');
-  headerElement.innerText = comment.getPosterName() +"\n";
+  headerElement.innerText = comment.posterName +":\n";
 
   const bodyElement = document.createElement('span');
-  bodyElement.innerText = comment.getComment() +"\n";
+  bodyElement.innerText = comment.comment +"\n";
 
-  liElement.appendChild(headerElement);
-  liElement.appendChild(bodyElement);
-  return liElement;
+  commentElement.appendChild(headerElement);
+  commentElement.appendChild(bodyElement);
+  return commentElement;
 }
 
 //tried doing a simple print("hello world") only for Google Chrome to attempt to print my webpage
