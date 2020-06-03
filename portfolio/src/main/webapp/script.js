@@ -80,12 +80,12 @@ function createListElement(text) {
 function createCommentElement(comment) {
   const commentElement = document.createElement('li');
   commentElement.classname = 'comment';
-  
+
   const headerElement = document.createElement('span');
-  headerElement.innerText = comment.posterName +":\n";
+  headerElement.innerHTML = "<h3>"+comment.posterName +"<h3>";
 
   const bodyElement = document.createElement('span');
-  bodyElement.innerText = comment.comment +"\n";
+  bodyElement.innerHTML = "<p>" + comment.comment +"<p>";
 
   commentElement.appendChild(headerElement);
   commentElement.appendChild(bodyElement);
