@@ -29,14 +29,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/data") 
 public class DataServlet extends HttpServlet {
-
-  private ArrayList<Comment> comments = new ArrayList<Comment>(
-    Arrays.asList(new Comment("This site is awesome!!!!!!1!","Some fanboy"),
-    new Comment("Hi, I'm Andrew Yang, and I approve this message.","Andrew Yang"),
-    new Comment("Hi, I'm Andrew Ying, and I dissaprove of the above.","Andrew Ying")));
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {

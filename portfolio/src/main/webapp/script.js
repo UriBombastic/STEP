@@ -79,6 +79,7 @@ function createListElement(text) {
 
 function createCommentElement(comment) {
   const commentElement = document.createElement('li');
+  commentElement.classname = 'comment';
   
   const headerElement = document.createElement('span');
   headerElement.innerText = comment.posterName +":\n";
