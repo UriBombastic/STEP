@@ -14,15 +14,16 @@ import java.io.IOException;
    
 @WebServlet("/delete-data") 
 public class DeleteDataServlet extends HttpServlet {
+  private String commentEntityName;
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    Query query = new Query("Comment");
+    Query query = new Query(commentEntityName);
     PreparedQuery allComments = datastore.prepare(query);
     for(Entity entity : allComments.asIterable()){
       long id = entity.getKey().getId();
-      Key commentEntityKey = KeyFactory.createKey("Comment", id);
+      Key commentEntityKey = KeyFactory.createKey(commentEntityName, id);
       datastore.delete(commentEntityKey);
     }  
     

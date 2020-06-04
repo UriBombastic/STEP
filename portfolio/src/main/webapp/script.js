@@ -12,10 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/**
- * Adds a random greeting to the page.
- */
-
+// adds a random fun fact to the page
 function addRandomFunFact() {
   const funFacts =
       ['Hablo Espanol!','My first programming class was visual basic, sophomore year of high school, 2015',
@@ -59,11 +56,10 @@ async function pullFromData() {
 function getComments() {
   fetch('/data').then(response => response.json()).then((comments) =>{
     const dataContainer = document.getElementById('data-container');
-    console.log(comments);
     // clear data
     dataContainer.innerHTML = ""; 
-    // dataContainer.innerText = JSON.stringify(comments);
-    // genereate comments
+
+    // generate comments
     for(i = 0; i < comments.length; i++) {
       dataContainer.appendChild(createCommentElement(comments[i]));
     }
