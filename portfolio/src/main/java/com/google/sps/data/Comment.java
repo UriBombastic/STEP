@@ -1,6 +1,5 @@
 package com.google.sps.data;
 
-import java.util.Date;//will use later
 public class Comment {
   private String comment;
   private String posterName;

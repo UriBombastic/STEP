@@ -27,7 +27,7 @@ function addRandomFunFact() {
       'My favorite sport is probably dodgeball. Actually, come to think of it, it\'s really the only sport I like.',
       'Belief in alien life: 100%. Belief in alien visitations: 75%. Belief in Alien abductions: 40%. Belief in ancient astronaut theories: 15%'];
 
-  // Pick a random greeting.
+  // Pick a random fun fact,
   const fact = funFacts[Math.floor(Math.random() * funFacts.length)];
 
   // Add it to the page.
@@ -44,10 +44,10 @@ function randomImage() {
   imgElement.src = imgUrl;
 
   const imageContainer = document.getElementById('senior-picture-container');
-  //remove previous image
+  // remove previous image
   imageContainer.innerHTML = '';
   imageContainer.appendChild(imgElement);
-  imageContainer.style.width = "800";//I'm struggling so desperately to constrain this width
+  imageContainer.style.width = "800";// I'm struggling so desperately to constrain this width
 }
 
 async function pullFromData() {
@@ -60,17 +60,17 @@ function getComments() {
   fetch('/data').then(response => response.json()).then((comments) =>{
     const dataContainer = document.getElementById('data-container');
     console.log(comments);
-    //clear data
+    // clear data
     dataContainer.innerHTML = ""; 
-    //dataContainer.innerText = JSON.stringify(comments);
-    //genereate comments
+    // dataContainer.innerText = JSON.stringify(comments);
+    // genereate comments
     for(i = 0; i < comments.length; i++) {
       dataContainer.appendChild(createCommentElement(comments[i]));
     }
   });
 }
 
-//copied from example; used to generate list of comments
+// copied from example; used to generate list of comments
 function createListElement(text) {
   const liElement = document.createElement('li');
   liElement.innerText = text + "\n";
@@ -92,8 +92,8 @@ function createCommentElement(comment) {
   return commentElement;
 }
 
-//tried doing a simple print("hello world") only for Google Chrome to attempt to print my webpage
-//thus inspiring this function
+// tried doing a simple print("hello world") only for Google Chrome to attempt to print my webpage
+// thus inspiring this function
 function gagFunction() {
   print("hello world");
 }

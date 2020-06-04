@@ -34,7 +34,7 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    //create comment and convert to Json
+    // create comment and convert to Json
     Query query = new Query("Comment").addSort("timestamp", SortDirection.DESCENDING);
     
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -58,7 +58,7 @@ public class DataServlet extends HttpServlet {
     String enteredName = request.getParameter("name-entry");
     String enteredComment = request.getParameter("comment-entry");
     long timestamp = System.currentTimeMillis();
-    //upload via datastore
+    // upload via datastore
     Entity commentEntity = new Entity("Comment");
     commentEntity.setProperty("author", enteredName);
     commentEntity.setProperty("comment", enteredComment);
