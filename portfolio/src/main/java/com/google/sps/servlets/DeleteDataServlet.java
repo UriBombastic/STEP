@@ -22,7 +22,7 @@ public class DeleteDataServlet extends HttpServlet {
     Query query = new Query(COMMENT_ENTITY_NAME);
     PreparedQuery allComments = datastore.prepare(query);
     for(Entity entity : allComments.asIterable()){
-      datastore.delete(entity.getKey(););
+      datastore.delete(entity.getKey());
     }  
     
     response.setContentType("text-html");
