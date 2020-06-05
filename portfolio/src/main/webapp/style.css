@@ -9,6 +9,9 @@ a {
   color:coral;
 }
 
+p {
+  max-width :  800px;
+}
 #content {
   margin-left: auto;
   margin-right: auto;
@@ -21,4 +24,9 @@ a {
 
 div {
   max-width : 800px;
+}
+
+li {
+  border: 2px solid #FFFFFF;
+  margin-bottom: 10px;
 }

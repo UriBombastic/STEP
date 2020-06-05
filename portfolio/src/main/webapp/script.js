@@ -12,9 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/**
- * Adds a random greeting to the page.
- */
+// adds a random fun fact to the page
 function addRandomFunFact() {
   const funFacts =
       ['Hablo Espanol!','My first programming class was visual basic, sophomore year of high school, 2015',
@@ -26,7 +24,7 @@ function addRandomFunFact() {
       'My favorite sport is probably dodgeball. Actually, come to think of it, it\'s really the only sport I like.',
       'Belief in alien life: 100%. Belief in alien visitations: 75%. Belief in Alien abductions: 40%. Belief in ancient astronaut theories: 15%'];
 
-  // Pick a random greeting.
+  // Pick a random fun fact,
   const fact = funFacts[Math.floor(Math.random() * funFacts.length)];
 
   // Add it to the page.
@@ -43,10 +41,10 @@ function randomImage() {
   imgElement.src = imgUrl;
 
   const imageContainer = document.getElementById('senior-picture-container');
-  //remove previous image
+  // remove previous image
   imageContainer.innerHTML = '';
   imageContainer.appendChild(imgElement);
-  imageContainer.style.width = "800";//I'm struggling so desperately to constrain this width
+  imageContainer.style.width = "800"; // I'm struggling so desperately to constrain this width
 }
 
 async function pullFromData() {
@@ -56,21 +54,22 @@ async function pullFromData() {
 }
 
 function getComments() {
-  fetch('/data').then(response => response.json()).then((comments) =>{
+  // establish comment limit
+  var dropDown = document.getElementById('numCommentsDropDown');
+  var commentLimit = dropDown.options[dropDown.selectedIndex].value;
+  fetch('/data?num-comments='+commentLimit).then(response => response.json()).then((comments) =>{
     const dataContainer = document.getElementById('data-container');
-    //clear data
+    // clear data
     dataContainer.innerHTML = ""; 
 
-    //genereate comments
-    for(i = 0; i < comments.length; i++)
-    {
-      console.log("hello world");
-      dataContainer.appendChild(createListElement(comments[i]));
+    // generate comments
+    for(i = 0; i < comments.length; i++) {
+      dataContainer.appendChild(createCommentElement(comments[i]));
     }
   });
 }
 
-//copied from example; used to generate list of comments
+// copied from example; used to generate list of comments
 function createListElement(text) {
   const liElement = document.createElement('li');
   liElement.innerText = text + "\n";
@@ -78,21 +77,16 @@ function createListElement(text) {
 }
 
 function createCommentElement(comment) {
-  const liElement = document.createElement('li');
-  
+  const commentElement = document.createElement('li');
+  commentElement.classname = 'comment';
+
   const headerElement = document.createElement('span');
-  headerElement.innerText = comment.getPosterName() +"\n";
+  headerElement.innerHTML = "<h3>"+comment.posterName +"<h3>";
 
   const bodyElement = document.createElement('span');
-  bodyElement.innerText = comment.getComment() +"\n";
+  bodyElement.innerHTML = "<p>" + comment.comment +"<p>";
 
-  liElement.appendChild(headerElement);
-  liElement.appendChild(bodyElement);
-  return liElement;
-}
-
-//tried doing a simple print("hello world") only for Google Chrome to attempt to print my webpage
-//thus inspiring this function
-function gagFunction() {
-  print("hello world");
+  commentElement.appendChild(headerElement);
+  commentElement.appendChild(bodyElement);
+  return commentElement;
 }

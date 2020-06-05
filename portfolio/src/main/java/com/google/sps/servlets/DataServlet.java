@@ -16,6 +16,13 @@ package com.google.sps.servlets;
 
 import com.google.sps.data.Comment;
 import com.google.gson.Gson;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.datastore.FetchOptions;
 import java.io.IOException;
 import java.util.*;
 import javax.servlet.annotation.WebServlet;
@@ -23,22 +30,35 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Servlet that returns some example content. TODO: modify this file to handle comments data */
-@WebServlet("/data") //"data" kept loading a blank screen no matter what I did so this was my workaround
+@WebServlet("/data") 
 public class DataServlet extends HttpServlet {
 
-  private ArrayList<String> comments = new ArrayList<String>(
-    Arrays.asList("This site is awesome!!!!!!1!",
-    "Hi, I'm Andrew Yang, and I approve this message.",
-    "Hi, I'm Andrew Ying, and I dissaprove of the above.")
-  );
+  private final String COMMENT_ENTITY_NAME = "Comment";
+  private final String AUTHOR_FIELD_NAME = "author";
+  private final String COMMENT_FIELD_NAME = "comment";
+  private final String TIMESTAMP_FIELD_NAME = "timestamp";
+  private final String NUM_COMMENT_PARAMETER = "num-comments";
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    //create comment adn convert to Json
+    // create comment and convert to Json
+    Query query = new Query(COMMENT_ENTITY_NAME).addSort(TIMESTAMP_FIELD_NAME, SortDirection.DESCENDING);
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery results = datastore.prepare(query);
 
-    String json = convertToJson(comments);
+    String commentsParameter = request.getParameter(NUM_COMMENT_PARAMETER);
+    int maxComments = Integer.parseInt(commentsParameter);
+    List<Comment> comments = new ArrayList<>();
+    List<Entity> entities = results.asList(FetchOptions.Builder.withLimit(maxComments));
+    
+    for (int i = 0; i < entities.size(); i++) {
+      String author = (String) entities.get(i).getProperty(AUTHOR_FIELD_NAME);
+      String comment = (String) entities.get(i).getProperty(COMMENT_FIELD_NAME);
+      comments.add(new Comment(author, comment));
+    }
 
     // Send the JSON as the response
+    String json = new Gson().toJson(comments);
     response.setContentType("application/json");
     response.getWriter().println(json);
   }
@@ -47,16 +67,19 @@ public class DataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String enteredName = request.getParameter("name-entry");
     String enteredComment = request.getParameter("comment-entry");
-    Comment comment = new Comment(enteredName, enteredComment);
-    //String json = convertToJson(comment);
-    comments.add(enteredComment); //testing to se if it's working
+    // block completely empty comments
+    if (!(enteredName.trim().equals("") && enteredComment.trim().equals(""))) {
+      long timestamp = System.currentTimeMillis();
+      // upload via datastore
+      Entity commentEntity = new Entity(COMMENT_ENTITY_NAME);
+      commentEntity.setProperty(AUTHOR_FIELD_NAME, enteredName);
+      commentEntity.setProperty(COMMENT_FIELD_NAME, enteredComment);
+      commentEntity.setProperty(TIMESTAMP_FIELD_NAME, timestamp);
+
+      DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+      datastore.put(commentEntity);
+    }
     response.sendRedirect("/comments.html");
   }
 
-  private String convertToJson(ArrayList<String> comment)
-  {
-    Gson gson = new Gson();
-    String json = gson.toJson(comment);
-    return json;
-  }
 }

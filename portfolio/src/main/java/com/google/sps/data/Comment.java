@@ -1,13 +1,14 @@
 package com.google.sps.data;
 
-import java.util.Date;//will use later
 public class Comment {
   private String comment;
   private String posterName;
 
-  public Comment(String comment, String posterName) {
+  public Comment(String posterName, String comment) {
     this.comment = comment;
     this.posterName = posterName;
+    if(comment.trim().equals("")) this.comment = "\"Hey look at me I commented whitespace I'm so cool\"";
+    if(posterName.trim().equals("")) this.posterName = "Anonymous";
   }
 
   public Comment(String comment) {
