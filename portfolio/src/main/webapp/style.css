@@ -25,3 +25,8 @@ p {
 div {
   max-width : 800px;
 }
+
+li {
+  border: 2px solid #FFFFFF;
+  margin-bottom: 10px;
+}

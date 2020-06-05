@@ -14,6 +14,15 @@
         <p>Your name: <input type="text" name = "name-entry"> </p>
         <p>Comment: <input type="text" name = "comment-entry"></p>
         <input type="submit"/>
+        <h3> Comments to view: </h3>
+        <select name="num-comments" id ="numCommentsDropDown">
+          <option value = "5">5</option>
+          <option value = "10">10</option>
+          <option value = "25">25</option>
+          <option value = "100">100</option>
+          <option value = "2147483647">2147483647</option>
+        </select>
+        <button onclick="getComments()">Refresh Comments</button>
       </form>
       <h2>Messages:</h2>
       <ul id="data-container"></ul>
