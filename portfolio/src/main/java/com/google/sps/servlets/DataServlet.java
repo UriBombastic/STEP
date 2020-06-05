@@ -50,9 +50,8 @@ public class DataServlet extends HttpServlet {
     int maxComments = Integer.parseInt(commentsParameter);
     List<Comment> comments = new ArrayList<>();
     List<Entity> entities = results.asList(FetchOptions.Builder.withLimit(maxComments));
-    //int commentsToLoad = Math.min(entities.size(), maxComments);
-    for(int i = 0; i < entities.size(); i++)
-    {
+    
+    for (int i = 0; i < entities.size(); i++) {
       String author = (String) entities.get(i).getProperty(AUTHOR_FIELD_NAME);
       String comment = (String) entities.get(i).getProperty(COMMENT_FIELD_NAME);
       comments.add(new Comment(author, comment));
@@ -69,7 +68,7 @@ public class DataServlet extends HttpServlet {
     String enteredName = request.getParameter("name-entry");
     String enteredComment = request.getParameter("comment-entry");
     // block completely empty comments
-    if(!(enteredName.trim().equals("") && enteredComment.trim().equals(""))) {
+    if (!(enteredName.trim().equals("") && enteredComment.trim().equals(""))) {
       long timestamp = System.currentTimeMillis();
       // upload via datastore
       Entity commentEntity = new Entity(COMMENT_ENTITY_NAME);
