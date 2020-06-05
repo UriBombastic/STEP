@@ -54,13 +54,18 @@ async function pullFromData() {
 }
 
 function getComments() {
-  fetch('/data').then(response => response.json()).then((comments) =>{
+  //establish comment limit
+  var dropDown = document.getElementById('numCommentsDropDown');
+  var commentLimit = dropDown.options[dropDown.selectedIndex].value;
+  fetch('/data?num-comments='+commentLimit).then(response => response.json()).then((comments) =>{
     const dataContainer = document.getElementById('data-container');
     // clear data
     dataContainer.innerHTML = ""; 
 
     // generate comments
     for(i = 0; i < comments.length; i++) {
+    //  if(i >= commentLimit) return;
+      
       dataContainer.appendChild(createCommentElement(comments[i]));
     }
   });
