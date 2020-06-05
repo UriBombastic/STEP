@@ -31,16 +31,16 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/data") 
 public class DataServlet extends HttpServlet {
-  // declare global constants so as to not incur the risks of hard-coding strings
-  String commentEntityName = "Comment";
-  String authorFieldName = "author";
-  String commentFieldName = "comment";
-  String timestampFieldName = "timestamp";
+
+  private final String COMMENT_ENTITY_NAME = "Comment";
+  private final String AUTHOR_FIELD_NAME = "author";
+  private final String COMMENT_FIELD_NAME = "comment";
+  private final String TIMESTAMP_FIELD_NAME = "timestamp";
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // create comment and convert to Json
-    Query query = new Query(commentEntityName).addSort(timestampFieldName, SortDirection.DESCENDING);
+    Query query = new Query(COMMENT_ENTITY_NAME).addSort(TIMESTAMP_FIELD_NAME, SortDirection.DESCENDING);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
@@ -50,8 +50,8 @@ public class DataServlet extends HttpServlet {
     int commentsLength = 0;
     List<Comment> comments = new ArrayList<>();
     for(Entity entity : results.asIterable()){
-      String author = (String) entity.getProperty(authorFieldName);
-      String comment = (String) entity.getProperty(commentFieldName);
+      String author = (String) entity.getProperty(AUTHOR_FIELD_NAME);
+      String comment = (String) entity.getProperty(COMMENT_FIELD_NAME);
       comments.add(new Comment(author, comment));
       commentsLength++; // keep track of how many comments were added.
       // cap number of comments to designated value.
@@ -73,10 +73,10 @@ public class DataServlet extends HttpServlet {
     if(!(enteredName.trim().equals("") && enteredComment.trim().equals(""))) {
       long timestamp = System.currentTimeMillis();
       // upload via datastore
-      Entity commentEntity = new Entity(commentEntityName);
-      commentEntity.setProperty(authorFieldName, enteredName);
-      commentEntity.setProperty(commentFieldName, enteredComment);
-      commentEntity.setProperty(timestampFieldName, timestamp);
+      Entity commentEntity = new Entity(COMMENT_ENTITY_NAME);
+      commentEntity.setProperty(AUTHOR_FIELD_NAME, enteredName);
+      commentEntity.setProperty(COMMENT_FIELD_NAME, enteredComment);
+      commentEntity.setProperty(TIMESTAMP_FIELD_NAME, timestamp);
 
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
       datastore.put(commentEntity);

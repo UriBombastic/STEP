@@ -64,8 +64,6 @@ function getComments() {
 
     // generate comments
     for(i = 0; i < comments.length; i++) {
-    //  if(i >= commentLimit) return;
-      
       dataContainer.appendChild(createCommentElement(comments[i]));
     }
   });
@@ -91,10 +89,4 @@ function createCommentElement(comment) {
   commentElement.appendChild(headerElement);
   commentElement.appendChild(bodyElement);
   return commentElement;
-}
-
-// tried doing a simple print("hello world") only for Google Chrome to attempt to print my webpage
-// thus inspiring this function
-function gagFunction() {
-  print("hello world");
 }
