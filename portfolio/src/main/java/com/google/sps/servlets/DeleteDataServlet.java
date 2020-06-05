@@ -14,7 +14,7 @@ import java.io.IOException;
    
 @WebServlet("/delete-data") 
 public class DeleteDataServlet extends HttpServlet {
-  private String commentEntityName;
+  private String commentEntityName = "Comment";
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
