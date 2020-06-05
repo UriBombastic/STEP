@@ -44,7 +44,7 @@ function randomImage() {
   // remove previous image
   imageContainer.innerHTML = '';
   imageContainer.appendChild(imgElement);
-  imageContainer.style.width = "800";// I'm struggling so desperately to constrain this width
+  imageContainer.style.width = "800"; // I'm struggling so desperately to constrain this width
 }
 
 async function pullFromData() {
@@ -54,7 +54,7 @@ async function pullFromData() {
 }
 
 function getComments() {
-  //establish comment limit
+  // establish comment limit
   var dropDown = document.getElementById('numCommentsDropDown');
   var commentLimit = dropDown.options[dropDown.selectedIndex].value;
   fetch('/data?num-comments='+commentLimit).then(response => response.json()).then((comments) =>{
