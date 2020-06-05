@@ -22,6 +22,7 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.datastore.FetchOptions;
 import java.io.IOException;
 import java.util.*;
 import javax.servlet.annotation.WebServlet;
@@ -46,17 +47,15 @@ public class DataServlet extends HttpServlet {
     PreparedQuery results = datastore.prepare(query);
 
     String commentsParameter = request.getParameter(NUM_COMMENT_PARAMETER);
-    int numComments = Integer.parseInt(commentsParameter);
-    int commentsLength =0;
+    int maxComments = Integer.parseInt(commentsParameter);
     List<Comment> comments = new ArrayList<>();
-    for(Entity entity : results.asIterable()){
-      String author = (String) entity.getProperty(AUTHOR_FIELD_NAME);
-      String comment = (String) entity.getProperty(COMMENT_FIELD_NAME);
+    List<Entity> entities = results.asList(FetchOptions.Builder.withLimit(maxComments));
+    //int commentsToLoad = Math.min(entities.size(), maxComments);
+    for(int i = 0; i < entities.size(); i++)
+    {
+      String author = (String) entities.get(i).getProperty(AUTHOR_FIELD_NAME);
+      String comment = (String) entities.get(i).getProperty(COMMENT_FIELD_NAME);
       comments.add(new Comment(author, comment));
-      commentsLength++; // keep track of how many comments were added.
-      // cap number of comments to designated value.
-      if(commentsLength >= numComments)
-        break;
     }
 
     // Send the JSON as the response
