@@ -36,6 +36,7 @@ public class DataServlet extends HttpServlet {
   private final String AUTHOR_FIELD_NAME = "author";
   private final String COMMENT_FIELD_NAME = "comment";
   private final String TIMESTAMP_FIELD_NAME = "timestamp";
+  private final String NUM_COMMENT_PARAMETER = "num-comments";
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -44,10 +45,9 @@ public class DataServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
-    String commentsParameter = request.getParameter("num-comments");
-    System.out.println("Comments parameter is: " + commentsParameter);
+    String commentsParameter = request.getParameter(NUM_COMMENT_PARAMETER);
     int numComments = Integer.parseInt(commentsParameter);
-    int commentsLength = 0;
+    int commentsLength =0;
     List<Comment> comments = new ArrayList<>();
     for(Entity entity : results.asIterable()){
       String author = (String) entity.getProperty(AUTHOR_FIELD_NAME);
