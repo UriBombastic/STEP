@@ -12,7 +12,8 @@
       <h1> Leave a comment? :-) </h1>  
       <form action="/data"method="POST">
         <p>Your name: <input type="text" name = "name-entry"> </p>
-        <p>Comment: <input type="text" name = "comment-entry"></p>
+        <p>Comment: <textarea name = "comment-entry"></textarea></p>
+        <p>Upload an image: <input type="file" name="image"></p>
         <input type="submit"/>
         <h3> Comments to view: </h3>
         <select name="num-comments" id ="numCommentsDropDown">

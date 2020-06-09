@@ -16,6 +16,8 @@ package com.google.sps.servlets;
 
 import com.google.sps.data.Comment;
 import com.google.gson.Gson;
+import com.google.appengine.api.blobstore.BlobstoreService;
+import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -36,6 +38,7 @@ public class DataServlet extends HttpServlet {
   private final String COMMENT_ENTITY_NAME = "Comment";
   private final String AUTHOR_FIELD_NAME = "author";
   private final String COMMENT_FIELD_NAME = "comment";
+  private final String IMAGE_URL_FIELD_NAME = "imageURL";
   private final String TIMESTAMP_FIELD_NAME = "timestamp";
   private final String NUM_COMMENT_PARAMETER = "num-comments";
 
@@ -54,7 +57,8 @@ public class DataServlet extends HttpServlet {
     for (int i = 0; i < entities.size(); i++) {
       String author = (String) entities.get(i).getProperty(AUTHOR_FIELD_NAME);
       String comment = (String) entities.get(i).getProperty(COMMENT_FIELD_NAME);
-      comments.add(new Comment(author, comment));
+      //TODO: replace hard-coded blank screen with imageUrl derived from form.
+      comments.add(new Comment(author, comment, ""));
     }
 
     // Send the JSON as the response
@@ -74,6 +78,8 @@ public class DataServlet extends HttpServlet {
       Entity commentEntity = new Entity(COMMENT_ENTITY_NAME);
       commentEntity.setProperty(AUTHOR_FIELD_NAME, enteredName);
       commentEntity.setProperty(COMMENT_FIELD_NAME, enteredComment);
+       //TODO: replace hardcoded blank string
+      commentEntity.setProperty(IMAGE_URL_FIELD_NAME, "");
       commentEntity.setProperty(TIMESTAMP_FIELD_NAME, timestamp);
 
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
