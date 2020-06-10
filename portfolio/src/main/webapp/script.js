@@ -81,18 +81,27 @@ function createCommentElement(comment) {
   commentElement.classname = 'comment';
 
   const headerElement = document.createElement('span');
-  headerElement.innerHTML = "<h3>"+cleanseString(comment.posterName) +"<h3>";
+  headerElement.innerHTML = "<h3>" + cleanseString(comment.posterName) +"<h3>";
 
   const bodyElement = document.createElement('span');
   bodyElement.innerHTML = "<p>" + cleanseString(comment.comment) +"<p>";
 
   commentElement.appendChild(headerElement);
   commentElement.appendChild(bodyElement);
+
+  // add image if applicable
+  if(comment.imageURL != null) {
+      const imageElement = document.createElement('span');
+      imageElement.innerHTML = "<a href = \"" + comment.imageURL +"\"><img src=\"" + comment.imageURL + "\"/>";
+      commentElement.appendChild(imageElement);
+  }
   return commentElement;
 }
-// attempt to prevent html injection
+
 function cleanseString(html) {
-  // Thanks, https://stackoverflow.com/questions/20855482/preventing-html-and-script-injections-in-javascript
+  // This function prevents html injections by replacing '<' and '>', 
+  // which can be used for escape sequences, with their html text equivalents.
+  // Solution credit: https://stackoverflow.com/questions/20855482/preventing-html-and-script-injections-in-javascript
   return html.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 

@@ -9,7 +9,8 @@ public class Comment {
     this.comment = comment;
     this.posterName = posterName;
     this.imageURL = imageURL;
-    if(comment.trim().equals("")) this.comment = "\"Hey look at me I commented whitespace I'm so cool\"";
+    if(comment.trim().equals("") && imageURL==null) 
+      this.comment = "\"Hey look at me I commented whitespace I'm so cool\"";
     if(posterName.trim().equals("")) this.posterName = "Anonymous";
   }
 

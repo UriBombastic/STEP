@@ -57,8 +57,8 @@ public class DataServlet extends HttpServlet {
     for (int i = 0; i < entities.size(); i++) {
       String author = (String) entities.get(i).getProperty(AUTHOR_FIELD_NAME);
       String comment = (String) entities.get(i).getProperty(COMMENT_FIELD_NAME);
-      //TODO: replace hard-coded blank screen with imageUrl derived from form.
-      comments.add(new Comment(author, comment, ""));
+      String uploadUrl = (String) entities.get(i).getProperty(IMAGE_URL_FIELD_NAME);
+      comments.add(new Comment(author, comment, uploadUrl));
     }
 
     // Send the JSON as the response
@@ -71,6 +71,8 @@ public class DataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String enteredName = request.getParameter("name-entry");
     String enteredComment = request.getParameter("comment-entry");
+    BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
+    String uploadUrl = blobstoreService.createUploadUrl("/my-form-handler");
     // block completely empty comments
     if (!(enteredName.trim().equals("") && enteredComment.trim().equals(""))) {
       long timestamp = System.currentTimeMillis();
@@ -78,8 +80,7 @@ public class DataServlet extends HttpServlet {
       Entity commentEntity = new Entity(COMMENT_ENTITY_NAME);
       commentEntity.setProperty(AUTHOR_FIELD_NAME, enteredName);
       commentEntity.setProperty(COMMENT_FIELD_NAME, enteredComment);
-       //TODO: replace hardcoded blank string
-      commentEntity.setProperty(IMAGE_URL_FIELD_NAME, "");
+      commentEntity.setProperty(IMAGE_URL_FIELD_NAME, uploadUrl);
       commentEntity.setProperty(TIMESTAMP_FIELD_NAME, timestamp);
 
       DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
