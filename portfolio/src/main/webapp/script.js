@@ -92,7 +92,7 @@ function createCommentElement(comment) {
 }
 
 function cleanseString(html) {
- //prevent html injection by replacing escape characters with plaintext
+  // prevent html injection by replacing escape characters with plaintext
   return html.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
