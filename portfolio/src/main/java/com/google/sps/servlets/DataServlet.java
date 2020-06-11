@@ -15,6 +15,7 @@
 package com.google.sps.servlets;
 
 import com.google.sps.data.Comment;
+import com.google.sps.data.Constants;
 import com.google.gson.Gson;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
@@ -35,29 +36,22 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/data") 
 public class DataServlet extends HttpServlet {
 
-  private final String COMMENT_ENTITY_NAME = "Comment";
-  private final String AUTHOR_FIELD_NAME = "author";
-  private final String COMMENT_FIELD_NAME = "comment";
-  private final String IMAGE_URL_FIELD_NAME = "imageURL";
-  private final String TIMESTAMP_FIELD_NAME = "timestamp";
-  private final String NUM_COMMENT_PARAMETER = "num-comments";
-
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // create comment and convert to Json
-    Query query = new Query(COMMENT_ENTITY_NAME).addSort(TIMESTAMP_FIELD_NAME, SortDirection.DESCENDING);
+    Query query = new Query(Constants.COMMENT_ENTITY_NAME).addSort(Constants.TIMESTAMP_FIELD_NAME, SortDirection.DESCENDING);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
 
-    String commentsParameter = request.getParameter(NUM_COMMENT_PARAMETER);
+    String commentsParameter = request.getParameter(Constants.NUM_COMMENT_PARAMETER);
     int maxComments = Integer.parseInt(commentsParameter);
     List<Comment> comments = new ArrayList<>();
     List<Entity> entities = results.asList(FetchOptions.Builder.withLimit(maxComments));
     
     for (int i = 0; i < entities.size(); i++) {
-      String author = (String) entities.get(i).getProperty(AUTHOR_FIELD_NAME);
-      String comment = (String) entities.get(i).getProperty(COMMENT_FIELD_NAME);
-      String uploadUrl = (String) entities.get(i).getProperty(IMAGE_URL_FIELD_NAME);
+      String author = (String) entities.get(i).getProperty(Constants.AUTHOR_FIELD_NAME);
+      String comment = (String) entities.get(i).getProperty(Constants.COMMENT_FIELD_NAME);
+      String uploadUrl = (String) entities.get(i).getProperty(Constants.IMAGE_URL_FIELD_NAME);
       comments.add(new Comment(author, comment, uploadUrl));
     }
 
@@ -66,7 +60,8 @@ public class DataServlet extends HttpServlet {
     response.setContentType("application/json");
     response.getWriter().println(json);
   }
-
+// experiment: moving this to FormHandlerServlet
+/*
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String enteredName = request.getParameter("name-entry");
@@ -88,5 +83,5 @@ public class DataServlet extends HttpServlet {
     }
     response.sendRedirect("/comments.html");
   }
-
+*/
 }

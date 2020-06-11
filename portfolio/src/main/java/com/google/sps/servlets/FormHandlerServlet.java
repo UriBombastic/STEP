@@ -14,6 +14,8 @@
 
 package com.google.sps.servlets;
 
+import com.google.sps.data.Comment;
+import com.google.sps.data.Constants;
 import com.google.appengine.api.blobstore.BlobInfo;
 import com.google.appengine.api.blobstore.BlobInfoFactory;
 import com.google.appengine.api.blobstore.BlobKey;
@@ -22,6 +24,9 @@ import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.images.ImagesService;
 import com.google.appengine.api.images.ImagesServiceFactory;
 import com.google.appengine.api.images.ServingUrlOptions;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.MalformedURLException;
@@ -43,10 +48,22 @@ public class FormHandlerServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // Get the URL of the image that the user uploaded to Blobstore.
+    String enteredName = request.getParameter("name-entry");
+    String enteredComment = request.getParameter("comment-entry");
     String imageUrl = getUploadedFileUrl(request, "image");
-    // output image URL;
-    response.getWriter().println(imageUrl);
+    if (!(enteredName.trim().equals("") && enteredComment.trim().equals(""))) {
+      long timestamp = System.currentTimeMillis();
+      // upload via datastore
+      Entity commentEntity = new Entity(Constants.COMMENT_ENTITY_NAME);
+      commentEntity.setProperty(Constants.AUTHOR_FIELD_NAME, enteredName);
+      commentEntity.setProperty(Constants.COMMENT_FIELD_NAME, enteredComment);
+      commentEntity.setProperty(Constants.IMAGE_URL_FIELD_NAME, imageUrl);
+      commentEntity.setProperty(Constants.TIMESTAMP_FIELD_NAME, timestamp);
+
+      DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+      datastore.put(commentEntity);
+    }
+    response.sendRedirect("/comments.html");
   }
 
   /** Returns a URL that points to the uploaded file, or null if the user didn't upload a file. */

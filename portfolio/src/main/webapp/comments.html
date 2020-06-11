@@ -10,7 +10,7 @@
   <body onload = "getComments()">
     <div id="content">
       <h1> Leave a comment? :-) </h1>  
-      <form action="/data"method="POST">
+      <form id="my-form" method="POST" encytpe="multipart/form-data">
         <p>Your name: <input type="text" name = "name-entry"> </p>
         <p>Comment: <textarea name = "comment-entry"></textarea></p>
         <p>Upload an image: <input type="file" name="image"></p>
