@@ -81,7 +81,7 @@ function createCommentElement(comment) {
   commentElement.classname = 'comment';
 
   const headerElement = document.createElement('span');
-  headerElement.innerHTML = "<h3>"+cleanseString(comment.posterName) +"<h3>";
+  headerElement.innerHTML = "<h3>" + cleanseString(comment.posterName) +"<h3>";
 
   const bodyElement = document.createElement('span');
   bodyElement.innerHTML = "<p>" + cleanseString(comment.comment) +"<p>";
@@ -90,9 +90,9 @@ function createCommentElement(comment) {
   commentElement.appendChild(bodyElement);
   return commentElement;
 }
-// attempt to prevent html injection
+
 function cleanseString(html) {
-  // Thanks, https://stackoverflow.com/questions/20855482/preventing-html-and-script-injections-in-javascript
+ //prevent html injection by replacing escape characters with plaintext
   return html.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
