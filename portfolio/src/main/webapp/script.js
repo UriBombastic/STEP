@@ -41,7 +41,7 @@ function randomImage() {
   imgElement.src = imgUrl;
 
   const imageContainer = document.getElementById('senior-picture-container');
-  // remove previous image
+  // Remove previous image
   imageContainer.innerHTML = '';
   imageContainer.appendChild(imgElement);
   imageContainer.style.width = "800"; // I'm struggling so desperately to constrain this width
@@ -54,22 +54,22 @@ async function pullFromData() {
 }
 
 function getComments() {
-  // establish comment limit
+  // Establish comment limit
   var dropDown = document.getElementById('numCommentsDropDown');
   var commentLimit = dropDown.options[dropDown.selectedIndex].value;
   fetch('/data?num-comments='+commentLimit).then(response => response.json()).then((comments) =>{
     const dataContainer = document.getElementById('data-container');
-    // clear data
+    // Clear data
     dataContainer.innerHTML = ""; 
 
-    // generate comments
+    // Generate comments
     for(i = 0; i < comments.length; i++) {
       dataContainer.appendChild(createCommentElement(comments[i]));
     }
   });
 }
 
-// copied from example; used to generate list of comments
+// Copied from example; used to generate list of comments
 function createListElement(text) {
   const liElement = document.createElement('li');
   liElement.innerText = text + "\n";
@@ -92,7 +92,7 @@ function createCommentElement(comment) {
 }
 
 function cleanseString(html) {
-  // prevent html injection by replacing escape characters with plaintext
+  // Prevent html injection by replacing escape characters with plaintext
   return html.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 

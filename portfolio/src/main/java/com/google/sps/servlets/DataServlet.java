@@ -41,7 +41,7 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // create comment and convert to Json
+    // Create comment and convert to Json
     Query query = new Query(COMMENT_ENTITY_NAME).addSort(TIMESTAMP_FIELD_NAME, SortDirection.DESCENDING);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
@@ -67,10 +67,10 @@ public class DataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String enteredName = request.getParameter("name-entry");
     String enteredComment = request.getParameter("comment-entry");
-    // block completely empty comments
+    // Block completely empty comments
     if (!(enteredName.trim().equals("") && enteredComment.trim().equals(""))) {
       long timestamp = System.currentTimeMillis();
-      // upload via datastore
+      // Upload via datastore
       Entity commentEntity = new Entity(COMMENT_ENTITY_NAME);
       commentEntity.setProperty(AUTHOR_FIELD_NAME, enteredName);
       commentEntity.setProperty(COMMENT_FIELD_NAME, enteredComment);
