@@ -104,7 +104,7 @@ function drawChart() {
   console.error("Hello world!");
   data.addColumn('string', 'Poster');
   data.addColumn('number', 'Comment Length');
-  // hard-coded for the time being
+  // Hard-coded for the time being
   fetch('/data?num-comments=5').then(response => response.json()).then((comments) =>{
     // Generate comments
    for(i = 0; i < comments.length; i++) {
