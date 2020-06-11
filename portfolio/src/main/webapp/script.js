@@ -101,22 +101,27 @@ google.charts.setOnLoadCallback(drawChart);
 
 function drawChart() {
   const data = new google.visualization.DataTable();
-  data.addColumn('string', 'Animal');
-  data.addColumn('number', 'Count');
-        data.addRows([
-          ['Lions', 10],
-          ['Tigers', 5],
-          ['Bears', 15]
-        ]);
+  console.error("Hello world!");
+  data.addColumn('string', 'Poster');
+  data.addColumn('number', 'Comment Length');
+  // hard-coded for the time being
+  fetch('/data?num-comments=5').then(response => response.json()).then((comments) =>{
+    // Generate comments
+   for(i = 0; i < comments.length; i++) {
+      data.addRows([
+        [comments[i].posterName, comments[i].comment.length]
+      ]);
+    }
 
-  const options = {
-    'title': 'Zoo Animals',
-    'width':500,
-    'height':400
-  };
-
-  const chart = new google.visualization.PieChart(
+    const options = {
+      'title': 'Length of first 5 Comments',
+      'width':500,
+      'height':400
+    };
+    const chart = new google.visualization.BarChart(
       document.getElementById('chart-container'));
-  chart.draw(data, options);
+
+    chart.draw(data, options);
+  });
 }
 
