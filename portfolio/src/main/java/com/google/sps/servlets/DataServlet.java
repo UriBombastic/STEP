@@ -71,8 +71,8 @@ public class DataServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String enteredName = request.getParameter("name-entry");
     String enteredComment = request.getParameter("comment-entry");
-    BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
-    String uploadUrl = blobstoreService.createUploadUrl("/my-form-handler");
+   // BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
+    String uploadUrl = "";//blobstoreService.createUploadUrl("/my-form-handler");
     // block completely empty comments
     if (!(enteredName.trim().equals("") && enteredComment.trim().equals(""))) {
       long timestamp = System.currentTimeMillis();

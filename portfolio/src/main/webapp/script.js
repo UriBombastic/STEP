@@ -67,6 +67,8 @@ function getComments() {
       dataContainer.appendChild(createCommentElement(comments[i]));
     }
   });
+  //get upload url
+    createUploadUrl();
 }
 
 // copied from example; used to generate list of comments
@@ -74,6 +76,18 @@ function createListElement(text) {
   const liElement = document.createElement('li');
   liElement.innerText = text + "\n";
   return liElement;
+}
+
+function createUploadUrl() {
+ fetch('/blobstore-upload-url')
+      .then((response) => {
+        return response.text();
+      })
+      .then((imageUploadUrl) => {
+        const messageForm = document.getElementById('my-form');
+        // messageForm.action = imageUploadUrl;
+        //  messageForm.classList.remove('hidden');
+      });
 }
 
 function createCommentElement(comment) {
@@ -91,6 +105,7 @@ function createCommentElement(comment) {
 
   // add image if applicable
   if(comment.imageURL != null) {
+      
       const imageElement = document.createElement('span');
       imageElement.innerHTML = "<a href = \"" + comment.imageURL +"\"><img src=\"" + comment.imageURL + "\"/>";
       commentElement.appendChild(imageElement);
