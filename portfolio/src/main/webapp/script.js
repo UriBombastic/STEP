@@ -105,7 +105,7 @@ function drawChart() {
   data.addColumn('number', 'Comment Length');
   var dropDown = document.getElementById('numCommentsDropDown');
   var commentLimit = dropDown.options[dropDown.selectedIndex].value;
-  //grabs comments to consider based off dropdown value.
+  // Grabs comments to consider based off dropdown value.
   fetch('/data?num-comments='+commentLimit).then(response => response.json()).then((comments) =>{
     // Grab comment data
     for(i = 0; i < comments.length; i++) {
