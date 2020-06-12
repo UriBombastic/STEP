@@ -96,18 +96,17 @@ function cleanseString(html) {
   return html.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
-google.charts.load('current', {'packages':['corechart']});
+google.charts.load('current', {'packages': ['corechart']});
 google.charts.setOnLoadCallback(drawChart);
 
 function drawChart() {
   const data = new google.visualization.DataTable();
-  console.error("Hello world!");
   data.addColumn('string', 'Poster');
   data.addColumn('number', 'Comment Length');
   // Hard-coded for the time being
   fetch('/data?num-comments=5').then(response => response.json()).then((comments) =>{
-    // Generate comments
-   for(i = 0; i < comments.length; i++) {
+    // Grab comment data
+    for(i = 0; i < comments.length; i++) {
       data.addRows([
         [comments[i].posterName, comments[i].comment.length]
       ]);
