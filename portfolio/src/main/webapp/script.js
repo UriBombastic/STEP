@@ -12,6 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+google.charts.load('current', {'packages': ['corechart']});
+google.charts.setOnLoadCallback(drawChart);
+
 // adds a random fun fact to the page
 function addRandomFunFact() {
   const funFacts =
@@ -41,7 +44,7 @@ function randomImage() {
   imgElement.src = imgUrl;
 
   const imageContainer = document.getElementById('senior-picture-container');
-  // remove previous image
+  // Remove previous image
   imageContainer.innerHTML = '';
   imageContainer.appendChild(imgElement);
   imageContainer.style.width = "800"; // I'm struggling so desperately to constrain this width
@@ -54,15 +57,15 @@ async function pullFromData() {
 }
 
 function getComments() {
-  // establish comment limit
+  // Establish comment limit
   var dropDown = document.getElementById('numCommentsDropDown');
   var commentLimit = dropDown.options[dropDown.selectedIndex].value;
   fetch('/data?num-comments='+commentLimit).then(response => response.json()).then((comments) =>{
     const dataContainer = document.getElementById('data-container');
-    // clear data
+    // Clear data
     dataContainer.innerHTML = ""; 
 
-    // generate comments
+    // Generate comments
     for(i = 0; i < comments.length; i++) {
       dataContainer.appendChild(createCommentElement(comments[i]));
     }
@@ -71,7 +74,7 @@ function getComments() {
     createUploadUrl();
 }
 
-// copied from example; used to generate list of comments
+// Copied from example; used to generate list of comments
 function createListElement(text) {
   const liElement = document.createElement('li');
   liElement.innerText = text + "\n";
@@ -118,5 +121,32 @@ function cleanseString(html) {
   // which can be used for escape sequences, with their html text equivalents.
   // Solution credit: https://stackoverflow.com/questions/20855482/preventing-html-and-script-injections-in-javascript
   return html.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+function drawChart() {
+  const data = new google.visualization.DataTable();
+  data.addColumn('string', 'Poster');
+  data.addColumn('number', 'Comment Length');
+  var dropDown = document.getElementById('numCommentsDropDown');
+  var commentLimit = dropDown.options[dropDown.selectedIndex].value;
+  // Grabs comments to consider based off dropdown value.
+  fetch('/data?num-comments='+commentLimit).then(response => response.json()).then((comments) =>{
+    // Grab comment data
+    for(i = 0; i < comments.length; i++) {
+      data.addRows([
+        [comments[i].posterName, comments[i].comment.length]
+      ]);
+    }
+
+    const options = {
+      'title': "Length of First " + comments.length + "  Comments",
+      'width':500,
+      'height':400
+    };
+    const chart = new google.visualization.BarChart(
+      document.getElementById('chart-container'));
+
+    chart.draw(data, options);
+  });
 }
 
