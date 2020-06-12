@@ -41,7 +41,7 @@ function randomImage() {
   imgElement.src = imgUrl;
 
   const imageContainer = document.getElementById('senior-picture-container');
-  // remove previous image
+  // Remove previous image
   imageContainer.innerHTML = '';
   imageContainer.appendChild(imgElement);
   imageContainer.style.width = "800"; // I'm struggling so desperately to constrain this width
@@ -54,22 +54,22 @@ async function pullFromData() {
 }
 
 function getComments() {
-  // establish comment limit
+  // Establish comment limit
   var dropDown = document.getElementById('numCommentsDropDown');
   var commentLimit = dropDown.options[dropDown.selectedIndex].value;
   fetch('/data?num-comments='+commentLimit).then(response => response.json()).then((comments) =>{
     const dataContainer = document.getElementById('data-container');
-    // clear data
+    // Clear data
     dataContainer.innerHTML = ""; 
 
-    // generate comments
+    // Generate comments
     for(i = 0; i < comments.length; i++) {
       dataContainer.appendChild(createCommentElement(comments[i]));
     }
   });
 }
 
-// copied from example; used to generate list of comments
+// Copied from example; used to generate list of comments
 function createListElement(text) {
   const liElement = document.createElement('li');
   liElement.innerText = text + "\n";
@@ -81,12 +81,18 @@ function createCommentElement(comment) {
   commentElement.classname = 'comment';
 
   const headerElement = document.createElement('span');
-  headerElement.innerHTML = "<h3>"+comment.posterName +"<h3>";
+  headerElement.innerHTML = "<h3>" + cleanseString(comment.posterName) +"<h3>";
 
   const bodyElement = document.createElement('span');
-  bodyElement.innerHTML = "<p>" + comment.comment +"<p>";
+  bodyElement.innerHTML = "<p>" + cleanseString(comment.comment) +"<p>";
 
   commentElement.appendChild(headerElement);
   commentElement.appendChild(bodyElement);
   return commentElement;
 }
+
+function cleanseString(html) {
+  // Prevent html injection by replacing escape characters with plaintext
+  return html.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
