@@ -103,8 +103,10 @@ function drawChart() {
   const data = new google.visualization.DataTable();
   data.addColumn('string', 'Poster');
   data.addColumn('number', 'Comment Length');
-  // Hard-coded for the time being
-  fetch('/data?num-comments=5').then(response => response.json()).then((comments) =>{
+  var dropDown = document.getElementById('numCommentsDropDown');
+  var commentLimit = dropDown.options[dropDown.selectedIndex].value;
+  //grabs comments to consider based off dropdown value.
+  fetch('/data?num-comments='+commentLimit).then(response => response.json()).then((comments) =>{
     // Grab comment data
     for(i = 0; i < comments.length; i++) {
       data.addRows([
