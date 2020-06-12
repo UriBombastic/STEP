@@ -115,7 +115,7 @@ function drawChart() {
     }
 
     const options = {
-      'title': 'Length of first 5 Comments',
+      'title': "Length of First " + comments.length + "  Comments",
       'width':500,
       'height':400
     };
