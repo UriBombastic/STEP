@@ -12,6 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+google.charts.load('current', {'packages': ['corechart']});
+google.charts.setOnLoadCallback(drawChart);
+
 // adds a random fun fact to the page
 function addRandomFunFact() {
   const funFacts =
@@ -95,9 +98,6 @@ function cleanseString(html) {
   // Prevent html injection by replacing escape characters with plaintext
   return html.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
-
-google.charts.load('current', {'packages': ['corechart']});
-google.charts.setOnLoadCallback(drawChart);
 
 function drawChart() {
   const data = new google.visualization.DataTable();
