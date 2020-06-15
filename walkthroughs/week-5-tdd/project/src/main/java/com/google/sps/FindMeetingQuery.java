@@ -24,11 +24,14 @@ public final class FindMeetingQuery {
     ArrayList<TimeRange> busyTimes = new ArrayList<TimeRange>();
     ArrayList<TimeRange> allBusyTimes = new ArrayList<TimeRange>();
     for(Event e : events) {
-      allBusyTimes.add(e.getWhen()); // Build list of required and optionals busy times
-      // Build list of only requireds
-      if(eventContains(e.getAttendees(),request.getAttendees())) { // Ensure event includes requireds
-        busyTimes.add(e.getWhen()); 
-      }
+    if(eventContains(e.getAttendees(),request.getAttendees())) { // Ensure event includes requireds
+      busyTimes.add(e.getWhen());  // Build list of only requireds
+      allBusyTimes.add(e.getWhen()); // Add required list to overall list
+    }  
+      if(eventContains(e.getAttendees(), request.getOptionalAttendees()))
+        allBusyTimes.add(e.getWhen()); // Add optionals to overall list
+     
+     
     }
     
     // Generate available times including optionals
