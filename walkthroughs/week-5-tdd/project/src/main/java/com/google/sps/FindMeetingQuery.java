@@ -22,35 +22,21 @@ public final class FindMeetingQuery {
  
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     ArrayList<TimeRange> busyTimes = new ArrayList<TimeRange>();
-    ArrayList<TimeRange> optionalBusyTimes = new ArrayList<TimeRange>();
+    ArrayList<TimeRange> allBusyTimes = new ArrayList<TimeRange>();
     for(Event e : events) {
-      if(eventContains(e.getAttendees(),request.getAttendees())) {
-        busyTimes.add(e.getWhen());
-      }
-      else if(eventContains(e.getAttendees(), request.getOptionalAttendees())) { 
-        optionalBusyTimes.add(e.getWhen());
+      allBusyTimes.add(e.getWhen()); // Build list of required and optionals busy times
+      // Build list of only requireds
+      if(eventContains(e.getAttendees(),request.getAttendees())) { // Ensure event includes requireds
+        busyTimes.add(e.getWhen()); 
       }
     }
     
-    Collections.sort(busyTimes, TimeRange.ORDER_BY_START);
-    Collections.sort(optionalBusyTimes, TimeRange.ORDER_BY_START);
- 
-    int startTime = TimeRange.START_OF_DAY;
-    // Find gaps between busy times
-    for(TimeRange timeRange : busyTimes) {
-      if(timeRange.start() >= startTime) { // Check that this busy time starts after previous one ends
-        // Create gap between end of last busy time and this one
-        checkInsertTime(startTime, timeRange.start(), (int)request.getDuration(),false);
-      
-     }
-      // Set start of potential meeting time to end of this time slot.
-      // Max function helps resolve nested events.
-      startTime = Math.max(startTime, timeRange.end()); 
+    // Generate available times including optionals
+    generatePotentialTimes(allBusyTimes, (int)request.getDuration());
+ 	if(viableTimeSlots.size() == 0) {
+    // Generate available times with only requireds.
+    generatePotentialTimes(busyTimes, (int)request.getDuration());
     }
-    // After iterating, check for timerange at end of day.
-    if(startTime < TimeRange.END_OF_DAY) // But only if it hasn't already been reached.
-      checkInsertTime(startTime, TimeRange.END_OF_DAY, (int)request.getDuration(), true);
- 
     return viableTimeSlots;
   }
  
@@ -62,7 +48,28 @@ public final class FindMeetingQuery {
     return false;
   }
  
-  void checkInsertTime(int startTime, int endTime, int duration, boolean doInclusive) {
+  private void generatePotentialTimes(ArrayList<TimeRange> busyTimes, int duration) {
+    // Ensure list is in chronological order
+    Collections.sort(busyTimes, TimeRange.ORDER_BY_START); 
+    int startTime = TimeRange.START_OF_DAY;
+    // Find gaps between busy times
+    for(TimeRange timeRange : busyTimes) {
+      if(timeRange.start() >= startTime) { // Check that this busy time starts after previous one ends
+        // Create gap between end of last busy time and this one
+        checkInsertTime(startTime, timeRange.start(), duration,false);
+      
+     }
+      // Set start of potential meeting time to end of this time slot.
+      // Max function helps resolve nested events.
+      startTime = Math.max(startTime, timeRange.end()); 
+    }
+    // After iterating, check for timerange at end of day.
+    if(startTime < TimeRange.END_OF_DAY) // But only if it hasn't already been reached.
+      checkInsertTime(startTime, TimeRange.END_OF_DAY, duration, true);
+ 
+  }
+
+  private void checkInsertTime(int startTime, int endTime, int duration, boolean doInclusive) {
     TimeRange potentialTime = TimeRange.fromStartEnd(startTime, endTime, doInclusive);
     if(potentialTime.duration() >= duration)
       viableTimeSlots.add(potentialTime);
