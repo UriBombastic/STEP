@@ -32,9 +32,6 @@ public final class FindMeetingQuery {
       }
     }
     
-    // if(busyTimes.size()==0) // If no one is busy, the whole day is available
-    //  viableTimeSlots.add(TimeRange.WHOLE_DAY);
- 
     Collections.sort(busyTimes, TimeRange.ORDER_BY_START);
     Collections.sort(optionalBusyTimes, TimeRange.ORDER_BY_START);
  
@@ -44,8 +41,11 @@ public final class FindMeetingQuery {
       if(timeRange.start() >= startTime) { // Check that this busy time starts after previous one ends
         // Create gap between end of last busy time and this one
         checkInsertTime(startTime, timeRange.start(), (int)request.getDuration(),false);
-      }
-      startTime = timeRange.end(); //set start of potential meeting time to end of this time slot
+      
+     }
+      // Set start of potential meeting time to end of this time slot.
+      // Max function helps resolve nested events.
+      startTime = Math.max(startTime, timeRange.end()); 
     }
     // After iterating, check for timerange at end of day.
     if(startTime < TimeRange.END_OF_DAY) // But only if it hasn't already been reached.
