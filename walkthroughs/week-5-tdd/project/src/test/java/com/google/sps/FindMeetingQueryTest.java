@@ -358,9 +358,11 @@ public final class FindMeetingQueryTest {
         Arrays.asList(PERSON_B)));
  
     MeetingRequest request = new MeetingRequest(Arrays.asList(), DURATION_30_MINUTES);
- 
+    request.addOptionalAttendee(PERSON_A);
+    request.addOptionalAttendee(PERSON_B);
+    
     Collection<TimeRange> actual = query.query(events, request);
-    Collection<TimeRange> expected =  Arrays.asList(TimeRange.fromStartDuration(TIME_1000AM, DURATION_60_MINUTES));
+    Collection<TimeRange> expected =  Arrays.asList();
   }
 }
  
