@@ -13,11 +13,10 @@
 // limitations under the License.
  
 package com.google.sps;
- 
+
 import java.util.*;
  
-public final class FindMeetingQuery {
-  
+public final class FindMeetingQuery { 
   private ArrayList<TimeRange> viableTimeSlots = new ArrayList<TimeRange>(); 
  
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
@@ -30,8 +29,6 @@ public final class FindMeetingQuery {
     }  
       if(eventContains(e.getAttendees(), request.getOptionalAttendees()))
         allBusyTimes.add(e.getWhen()); // Add optionals to overall list
-     
-     
     }
     
     // Generate available times including optionals
@@ -59,8 +56,7 @@ public final class FindMeetingQuery {
     for(TimeRange timeRange : busyTimes) {
       if(timeRange.start() >= startTime) { // Check that this busy time starts after previous one ends
         // Create gap between end of last busy time and this one
-        checkInsertTime(startTime, timeRange.start(), duration,false);
-      
+        checkInsertTime(startTime, timeRange.start(), duration,false);   
      }
       // Set start of potential meeting time to end of this time slot.
       // Max function helps resolve nested events.
@@ -69,7 +65,6 @@ public final class FindMeetingQuery {
     // After iterating, check for timerange at end of day.
     if(startTime < TimeRange.END_OF_DAY) // But only if it hasn't already been reached.
       checkInsertTime(startTime, TimeRange.END_OF_DAY, duration, true);
- 
   }
 
   private void checkInsertTime(int startTime, int endTime, int duration, boolean doInclusive) {
