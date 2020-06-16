@@ -335,6 +335,7 @@ public final class FindMeetingQueryTest {
  
   @Test
   public void noMandatorySufficientRoom() {
+      // Have no mandatory participants, but have enough room that they can find a meeting time.
        Collection<Event> events = Arrays.asList(
         new Event("Event 1", TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_1000AM, false),
             Arrays.asList(PERSON_A)),
@@ -351,6 +352,7 @@ public final class FindMeetingQueryTest {
  
   @Test
   public void noMandatoryInSufficientRoom() {
+    // Have no mandatory participants, but not enough room for them to find a meeting time.
     Collection<Event> events = Arrays.asList(
       new Event("Event 1", TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TimeRange.END_OF_DAY, false),
         Arrays.asList(PERSON_A)),
@@ -360,7 +362,7 @@ public final class FindMeetingQueryTest {
     MeetingRequest request = new MeetingRequest(Arrays.asList(), DURATION_30_MINUTES);
     request.addOptionalAttendee(PERSON_A);
     request.addOptionalAttendee(PERSON_B);
-    
+
     Collection<TimeRange> actual = query.query(events, request);
     Collection<TimeRange> expected =  Arrays.asList();
   }
