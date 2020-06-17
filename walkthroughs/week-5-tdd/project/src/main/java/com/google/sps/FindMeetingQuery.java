@@ -46,11 +46,7 @@ public final class FindMeetingQuery {
   }
  
   private boolean eventContains(Collection<String> eventAttendees, Collection<String> targetAttendees) {
-    for (String attendee : targetAttendees) {
-      if (eventAttendees.contains(attendee))
-        return true;
-    }
-    return false;
+    return !(Collections.disjoint(eventAttendees, targetAttendees));
   }
  
   private ArrayList<TimeRange> generatePotentialTimes(ArrayList<TimeRange> busyTimes, int duration) {
