@@ -16,11 +16,13 @@ package com.google.sps;
 import java.util.*;
  
 public final class FindMeetingQuery { 
-  private ArrayList<TimeRange> viableTimeSlots = new ArrayList<TimeRange>(); 
- 
+
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
     ArrayList<TimeRange> requiredBusyTimes = new ArrayList<TimeRange>();
     ArrayList<TimeRange> allBusyTimes = new ArrayList<TimeRange>();
+    ArrayList<TimeRange> viableTimeSlots;
+    int duration = (int)request.getDuration();
+
     for(Event e : events) {
       // Ensure event includes requireds
       if (eventContains(e.getAttendees(), request.getAttendees())) {
@@ -32,23 +34,24 @@ public final class FindMeetingQuery {
     }
     
     // Generate available times including optionals
-    generatePotentialTimes(allBusyTimes, (int)request.getDuration());
+    generatePotentialTimes(allBusyTimes, duration);
  	if(viableTimeSlots.size() == 0) {
       // Generate available times with only requireds.
-      generatePotentialTimes(requiredBusyTimes, (int)request.getDuration());
+      generatePotentialTimes(requiredBusyTimes, duration);
     }
     return viableTimeSlots;
   }
  
   private boolean eventContains(Collection<String> eventAttendees, Collection<String> targetAttendees) {
     for(String attendee : targetAttendees) {
-        if(eventAttendees.contains(attendee))
-          return true;
+      if(eventAttendees.contains(attendee))
+        return true;
     }
     return false;
   }
  
-  private void generatePotentialTimes(ArrayList<TimeRange> busyTimes, int duration) {
+  private ArrayList<TimeRange> generatePotentialTimes(ArrayList<TimeRange> busyTimes, int duration) {
+    ArrayList<TimeRange> viableTimeSlots = new ArrayList<TimeRange>();
     // Ensure list is in chronological order
     Collections.sort(busyTimes, TimeRange.ORDER_BY_START); 
     int startTime = TimeRange.START_OF_DAY;
@@ -58,13 +61,17 @@ public final class FindMeetingQuery {
         // Create gap between end of last busy time and this one
         checkInsertTime(startTime, timeRange.start(), duration,false);   
      }
-      // Set start of potential meeting time to end of this time slot.
-      // Max function helps resolve nested events.
+      // Set start of potential meeting time to end of this time slot,
+      // only as long as it occurs after the current start time.
+      // This handles scenarios like nested and overlapping events.
       startTime = Math.max(startTime, timeRange.end()); 
     }
-    // After iterating, check for timerange at end of day.
-    if(startTime < TimeRange.END_OF_DAY) // But only if it hasn't already been reached.
+    // After iterating, check for timerange at end of day,
+    // but only if it hasn't already been reached.
+    if(startTime < TimeRange.END_OF_DAY)
       checkInsertTime(startTime, TimeRange.END_OF_DAY, duration, true);
+
+    return viableTimeSlots;
   }
 
   private void checkInsertTime(int startTime, int endTime, int duration, boolean doInclusive) {
