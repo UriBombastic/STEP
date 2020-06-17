@@ -15,27 +15,26 @@ package com.google.sps;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.stream.Collectors;
 import java.util.ArrayList;
+import java.util.List;
 // This class takes in a collection of events and a meeting request,
 // and generates potential times for the meeting. 
 public final class FindMeetingQuery { 
 
   ArrayList<TimeRange> viableTimeSlots = new ArrayList<TimeRange>();
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    ArrayList<TimeRange> requiredBusyTimes = new ArrayList<TimeRange>();
-    ArrayList<TimeRange> allBusyTimes = new ArrayList<TimeRange>();
     int duration = (int)request.getDuration();
 
-    for(Event e : events) {
-      // Ensure event includes requireds
-      if (eventContains(e.getAttendees(), request.getAttendees())) {
-        requiredBusyTimes.add(e.getWhen());  // Build list of only requireds
-        allBusyTimes.add(e.getWhen()); // Add required list to overall list
-      }  
-      if (eventContains(e.getAttendees(), request.getOptionalAttendees()))
-        allBusyTimes.add(e.getWhen()); // Add optionals to overall list
-    }
-    
+    List<TimeRange> requiredBusyTimes = events.stream()
+      .filter(e -> eventContains(e.getAttendees(), request, false))
+      .map(e -> e.getWhen())
+      .collect(Collectors.toList());   
+    List<TimeRange> allBusyTimes = events.stream()
+      .filter(e -> eventContains(e.getAttendees(), request, true))
+      .map(e -> e.getWhen())
+      .collect(Collectors.toList()); 
+
     // Generate available times including optionals
     generatePotentialTimes(allBusyTimes, duration);
  	if (viableTimeSlots.size() == 0) {
@@ -45,11 +44,12 @@ public final class FindMeetingQuery {
     return viableTimeSlots;
   }
  
-  private boolean eventContains(Collection<String> eventAttendees, Collection<String> targetAttendees) {
-    return !(Collections.disjoint(eventAttendees, targetAttendees));
+  private boolean eventContains(Collection<String> eventAttendees, MeetingRequest request, boolean includeOptionals) {
+    return (!Collections.disjoint(eventAttendees, request.getAttendees())) ||
+      (includeOptionals && !Collections.disjoint(eventAttendees, request.getOptionalAttendees()));
   }
  
-  private ArrayList<TimeRange> generatePotentialTimes(ArrayList<TimeRange> busyTimes, int duration) {
+  private ArrayList<TimeRange> generatePotentialTimes(List<TimeRange> busyTimes, int duration) {
     viableTimeSlots = new ArrayList<TimeRange>();
     // Ensure list is in chronological order
     Collections.sort(busyTimes, TimeRange.ORDER_BY_START); 
