@@ -19,13 +19,14 @@ public final class FindMeetingQuery {
   private ArrayList<TimeRange> viableTimeSlots = new ArrayList<TimeRange>(); 
  
   public Collection<TimeRange> query(Collection<Event> events, MeetingRequest request) {
-    ArrayList<TimeRange> busyTimes = new ArrayList<TimeRange>();
+    ArrayList<TimeRange> requiredBusyTimes = new ArrayList<TimeRange>();
     ArrayList<TimeRange> allBusyTimes = new ArrayList<TimeRange>();
     for(Event e : events) {
-    if(eventContains(e.getAttendees(),request.getAttendees())) { // Ensure event includes requireds
-      busyTimes.add(e.getWhen());  // Build list of only requireds
-      allBusyTimes.add(e.getWhen()); // Add required list to overall list
-    }  
+      // Ensure event includes requireds
+      if (eventContains(e.getAttendees(), request.getAttendees())) {
+        requiredBusyTimes.add(e.getWhen());  // Build list of only requireds
+        allBusyTimes.add(e.getWhen()); // Add required list to overall list
+      }  
       if(eventContains(e.getAttendees(), request.getOptionalAttendees()))
         allBusyTimes.add(e.getWhen()); // Add optionals to overall list
     }
@@ -33,8 +34,8 @@ public final class FindMeetingQuery {
     // Generate available times including optionals
     generatePotentialTimes(allBusyTimes, (int)request.getDuration());
  	if(viableTimeSlots.size() == 0) {
-    // Generate available times with only requireds.
-    generatePotentialTimes(busyTimes, (int)request.getDuration());
+      // Generate available times with only requireds.
+      generatePotentialTimes(requiredBusyTimes, (int)request.getDuration());
     }
     return viableTimeSlots;
   }

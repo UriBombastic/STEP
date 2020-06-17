@@ -284,9 +284,10 @@ public final class FindMeetingQueryTest {
   @Test
   public void notEnoughRoom() {
     // Have one person, but make it so that there is just enough room at one point in the day to
-    // have the meeting.
+    // have the meeting. A second optional person has some time in when person A does, but not enough
+    // for the meeting, and therefore should be ignored.
     //
-    // Events  : |--A--|     |----A----|
+    // Events  : |--A--||B|  |----A----|
     // Day     : |---------------------|
     // Options :       |-----|
  
