@@ -13,8 +13,11 @@
 // limitations under the License.
 package com.google.sps;
 
-import java.util.*;
- 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.ArrayList;
+// This class takes in a collection of events and a meeting request,
+// and generates potential times for the meeting. 
 public final class FindMeetingQuery { 
 
   ArrayList<TimeRange> viableTimeSlots = new ArrayList<TimeRange>();
@@ -29,13 +32,13 @@ public final class FindMeetingQuery {
         requiredBusyTimes.add(e.getWhen());  // Build list of only requireds
         allBusyTimes.add(e.getWhen()); // Add required list to overall list
       }  
-      if(eventContains(e.getAttendees(), request.getOptionalAttendees()))
+      if (eventContains(e.getAttendees(), request.getOptionalAttendees()))
         allBusyTimes.add(e.getWhen()); // Add optionals to overall list
     }
     
     // Generate available times including optionals
     generatePotentialTimes(allBusyTimes, duration);
- 	if(viableTimeSlots.size() == 0) {
+ 	if (viableTimeSlots.size() == 0) {
       // Generate available times with only requireds.
       generatePotentialTimes(requiredBusyTimes, duration);
     }
@@ -43,8 +46,8 @@ public final class FindMeetingQuery {
   }
  
   private boolean eventContains(Collection<String> eventAttendees, Collection<String> targetAttendees) {
-    for(String attendee : targetAttendees) {
-      if(eventAttendees.contains(attendee))
+    for (String attendee : targetAttendees) {
+      if (eventAttendees.contains(attendee))
         return true;
     }
     return false;
@@ -56,8 +59,8 @@ public final class FindMeetingQuery {
     Collections.sort(busyTimes, TimeRange.ORDER_BY_START); 
     int startTime = TimeRange.START_OF_DAY;
     // Find gaps between busy times
-    for(TimeRange timeRange : busyTimes) {
-      if(timeRange.start() >= startTime) { // Check that this busy time starts after previous one ends
+    for (TimeRange timeRange : busyTimes) {
+      if (timeRange.start() >= startTime) { // Check that this busy time starts after previous one ends
         // Create gap between end of last busy time and this one
         insertTimeIfValid(startTime, timeRange.start(), duration,false);   
      }
@@ -68,15 +71,16 @@ public final class FindMeetingQuery {
     }
     // After iterating, check for timerange at end of day,
     // but only if it hasn't already been reached.
-    if(startTime < TimeRange.END_OF_DAY)
+    if (startTime < TimeRange.END_OF_DAY) { 
       insertTimeIfValid(startTime, TimeRange.END_OF_DAY, duration, true);
-
+    }
     return viableTimeSlots;
   }
 
   private void insertTimeIfValid(int startTime, int endTime, int duration, boolean doInclusive) {
     TimeRange potentialTime = TimeRange.fromStartEnd(startTime, endTime, doInclusive);
-    if(potentialTime.duration() >= duration)
+    if (potentialTime.duration() >= duration) {
       viableTimeSlots.add(potentialTime);
+    }
   }
 }
