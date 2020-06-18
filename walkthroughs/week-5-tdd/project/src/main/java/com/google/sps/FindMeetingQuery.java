@@ -49,24 +49,21 @@ public final class FindMeetingQuery {
       (includeOptionals && !Collections.disjoint(eventAttendees, request.getOptionalAttendees()));
   }
  
+  // Takes a list of TimeRanges, iterates over them to find gaps longer than given duration, returns these gaps.
   private ArrayList<TimeRange> generatePotentialTimes(List<TimeRange> busyTimes, int duration) {
     viableTimeSlots = new ArrayList<TimeRange>();
-    // Ensure list is in chronological order
     Collections.sort(busyTimes, TimeRange.ORDER_BY_START); 
     int startTime = TimeRange.START_OF_DAY;
-    // Find gaps between busy times
+
     for (TimeRange timeRange : busyTimes) {
-      if (timeRange.start() >= startTime) { // Check that this busy time starts after previous one ends
-        // Create gap between end of last busy time and this one
+      if (timeRange.start() >= startTime) { 
+        // Create gap between end of last busy time and timeRange in question
         insertTimeIfValid(startTime, timeRange.start(), duration,false);   
-     }
-      // Set start of potential meeting time to end of this time slot,
-      // only as long as it occurs after the current start time.
-      // This handles scenarios like nested and overlapping events.
+      }
+      // Start time of next possible meeting time would be the end of the current busytime
       startTime = Math.max(startTime, timeRange.end()); 
     }
-    // After iterating, check for timerange at end of day,
-    // but only if it hasn't already been reached.
+    // Check for timerange at end of day, but only if it hasn't already been reached.
     if (startTime < TimeRange.END_OF_DAY) { 
       insertTimeIfValid(startTime, TimeRange.END_OF_DAY, duration, true);
     }
