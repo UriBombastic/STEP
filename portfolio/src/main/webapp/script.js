@@ -96,3 +96,34 @@ function cleanseString(html) {
   return html.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
+function getYouTubeComments() { 
+  const dataContainer = document.getElementById('data-container');
+  const urlInput = document.getElementById('url-entry');
+  var URL = urlInput.value;
+  console.log(URL);
+  fetch('https://www.googleapis.com/youtube/v3/commentThreads?key=AIzaSyDhTPFz-z0XN0a_VUyZoYNNg8Qcz0X_9Sc&textFormat=plainText&part=snippet&videoId='+URL+'&maxResults=50000')
+    .then(response => response.json()).then((comments) =>{
+        // Generate comments
+      dataContainer.innerText = "Howdy world";
+      console.log(comments);
+      console.log(comments.items.length);
+
+      for(i = 0; i < comments.items.length; i++) {
+        dataContainer.appendChild(createYouTubeCommentElement(comments.items[i]));
+      }
+    });
+
+}
+
+function createYouTubeCommentElement(comment) { 
+    const commentElement = document.createElement('li');
+    commentElement.classname = 'comment';
+
+    const bodyElement = document.createElement('span');
+    // There's got to be a more efficient way to access this lol
+    bodyElement.innerText= comment.snippet.topLevelComment.snippet.textDisplay;
+
+    commentElement.appendChild(bodyElement);
+    return commentElement;
+}
+
