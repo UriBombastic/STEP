@@ -101,7 +101,7 @@ function getYouTubeComments() {
   const urlInput = document.getElementById('url-entry');
   var URL = urlInput.value;
   console.log(URL);
-  fetch('https://www.googleapis.com/youtube/v3/commentThreads?key=AIzaSyDhTPFz-z0XN0a_VUyZoYNNg8Qcz0X_9Sc&textFormat=plainText&part=snippet&videoId='+URL+'&maxResults=50000')
+  fetch('https://www.googleapis.com/youtube/v3/commentThreads?key=AIzaSyDhTPFz-z0XN0a_VUyZoYNNg8Qcz0X_9Sc&textFormat=plainText&part=snippet&videoId='+URL+'&maxResults=50000&order=relevance')
     .then(response => response.json()).then((comments) =>{
         // Generate comments
       dataContainer.innerText = "Howdy world";
