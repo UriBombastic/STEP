@@ -99,20 +99,33 @@ function cleanseString(html) {
 function getYouTubeComments() { 
   const dataContainer = document.getElementById('data-container');
   const urlInput = document.getElementById('url-entry');
-  var URL = urlInput.value;
+  var URL = cleanseUrl(urlInput.value);
   console.log(URL);
-  fetch('https://www.googleapis.com/youtube/v3/commentThreads?key=AIzaSyDhTPFz-z0XN0a_VUyZoYNNg8Qcz0X_9Sc&textFormat=plainText&part=snippet&videoId='+URL+'&maxResults=50000&order=relevance')
+ // fetch('https://www.googleapis.com/youtube/v3/commentThreads?key=AIzaSyDhTPFz-z0XN0a_VUyZoYNNg8Qcz0X_9Sc&textFormat=plainText&part=snippet&videoId='+URL+'&maxResults=50000&order=relevance')
+ fetch("/YouTubeData?url="+URL)
     .then(response => response.json()).then((comments) =>{
         // Generate comments
       dataContainer.innerText = "Howdy world";
-      console.log(comments);
-      console.log(comments.items.length);
+      //console.log(comments);
+      //console.log(comments.items.length);
 
       for(i = 0; i < comments.items.length; i++) {
         dataContainer.appendChild(createYouTubeCommentElement(comments.items[i]));
       }
     });
 
+}
+// Extracts video id from full url
+function cleanseUrl(url) {
+  // Split web address from parameters, extract first parameter
+  var videoId = url.split("?");
+  videoId = (videoId.length > 1) ? videoId[1].split("&")[0] : videoId[0];
+
+  // Remove parameter name to isolate video Id.
+  if(videoId.includes("v=")) { 
+    videoId=videoId.replace("v=","");
+  }
+  return videoId;
 }
 
 function createYouTubeCommentElement(comment) { 
