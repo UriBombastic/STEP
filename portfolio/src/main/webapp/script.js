@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+
 // adds a random fun fact to the page
 function addRandomFunFact() {
   const funFacts =
@@ -95,4 +96,5 @@ function cleanseString(html) {
   // Prevent html injection by replacing escape characters with plaintext
   return html.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
+
 
